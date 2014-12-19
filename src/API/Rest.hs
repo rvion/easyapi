@@ -3,8 +3,8 @@
 {-# LANGUAGE TemplateHaskell   #-}
 
 module API.Rest
-    ( Token, LBS, BS -- practical aliases reexport
-    , Auth           -- authentication wrapper
+    ( LBS, BS -- practical aliases reexport
+    , Auth(..)           -- authentication wrapper
     , apiWrapper
     ) where
 
@@ -16,10 +16,9 @@ import           Data.ByteString.Lazy      as LBS
 type LBS = LBS.ByteString
 type BS = BS.ByteString
 
-type Token = LBS
 data Auth
   = Credential {_user, _pass :: BS }
-  | Token {_token :: Token }
+  | Token {_token :: LBS }
   deriving (Show)
 makeLenses ''Auth
 
