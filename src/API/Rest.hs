@@ -8,7 +8,7 @@ module API.Rest
     , apiWrapper
     ) where
 
-import           "easyapi" Imports
+import           "this" Imports
 
 type Token = LBS
 data Auth
