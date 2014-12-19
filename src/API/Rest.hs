@@ -3,15 +3,14 @@
 {-# LANGUAGE TemplateHaskell   #-}
 
 module API.Rest
-    ( LBS, BS -- practical aliases reexport
-    , Auth(..)           -- authentication wrapper
+    ( LBS, BS, Auth(..)
     , apiWrapper
     ) where
 
 
+import           Data.ByteString         as BS
+import           Data.ByteString.Lazy    as LBS
 import           "this" Imports
-import           Data.ByteString           as BS
-import           Data.ByteString.Lazy      as LBS
 
 type LBS = LBS.ByteString
 type BS = BS.ByteString
@@ -23,8 +22,8 @@ data Auth
 makeLenses ''Auth
 
 
-apiWrapper :: String ->  Auth ->  Method -> String -> IO LBS
-apiWrapper baseUrl auth verb url = do
+apiWrapper :: String -> String -> Method -> Auth -> IO LBS
+apiWrapper baseUrl url verb auth = do
   initReq <- parseUrl (baseUrl <> url)
   let req = authFunction $ initReq
         { secure = True
