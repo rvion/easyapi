@@ -1,5 +1,5 @@
-module API.Internal.Imports
-  ( module API.Internal.Imports
+module Imports
+  ( module Imports
   , module X
   , LBS.toStrict
   ) where

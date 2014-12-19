@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
 {-# LANGUAGE TemplateHaskell   #-}
 
 module API.Rest
@@ -7,7 +8,7 @@ module API.Rest
     , apiWrapper
     ) where
 
-import           API.Internal.Imports
+import           "easyapi" Imports
 
 type Token = LBS
 data Auth
