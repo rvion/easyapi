@@ -16,8 +16,8 @@ import           Data.Monoid               as X ((<>))
 
 
 -- import   Data.ByteString.Lazy as X (toStrict)
+import           Data.ByteString           as BS
 import           Data.ByteString.Lazy      as LBS
-import           Data.ByteString      as BS
 
 type LBS = LBS.ByteString
 type BS = BS.ByteString
