@@ -1,5 +1,5 @@
 -- | Main entry point to the application.
-module Main where
+module Test where
 
 -- | The main entry point.
 main :: IO ()

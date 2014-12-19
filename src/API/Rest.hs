@@ -3,12 +3,17 @@
 {-# LANGUAGE TemplateHaskell   #-}
 
 module API.Rest
-    ( Token
-    , Auth
+    ( Token, LBS, BS -- practical aliases reexport
+    , Auth           -- authentication wrapper
     , apiWrapper
     ) where
 
 import           "this" Imports
+import           Data.ByteString           as BS
+import           Data.ByteString.Lazy      as LBS
+
+type LBS = LBS.ByteString
+type BS = BS.ByteString
 
 type Token = LBS
 data Auth
@@ -16,6 +21,7 @@ data Auth
   | Token {_token :: Token }
   deriving (Show)
 makeLenses ''Auth
+
 
 apiWrapper :: String ->  Auth ->  Method -> String -> IO LBS
 apiWrapper baseUrl auth verb url = do
