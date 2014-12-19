@@ -1,9 +1,13 @@
-{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell   #-}
 
-module API.Rest where
+module API.Rest
+    ( Token
+    , Auth
+    , apiWrapper
+    ) where
 
-import API.Internal.Imports
+import           API.Internal.Imports
 
 type Token = LBS
 data Auth
@@ -12,9 +16,9 @@ data Auth
   deriving (Show)
 makeLenses ''Auth
 
-heroku :: String -> Method -> Auth -> IO LBS
-heroku url verb auth = do
-  initReq <- parseUrl ("https://api.heroku.com/" <> url)
+apiWrapper :: String ->  Auth ->  Method -> String -> IO LBS
+apiWrapper baseUrl auth verb url = do
+  initReq <- parseUrl (baseUrl <> url)
   let req = authFunction $ initReq
         { secure = True
         , method = verb
