@@ -7,7 +7,6 @@ module API.Rest
     , apiWrapper
     ) where
 
-
 import           Data.ByteString         as BS
 import           Data.ByteString.Lazy    as LBS
 import           "this" Imports
@@ -18,6 +17,7 @@ type BS = BS.ByteString
 data Auth
   = Credential {_user, _pass :: BS }
   | Token {_token :: LBS }
+  | NoAuth
   deriving (Show)
 makeLenses ''Auth
 
@@ -36,5 +36,6 @@ apiWrapper baseUrl url verb auth = do
   liftM responseBody $ withManager $ httpLbs req
   where
     (authFunction, authHeader) = case auth of
+      NoAuth -> (id, [])
       (Token tok) -> (id, [(hAuthorization, "Bearer " <> toStrict tok)])
       (Credential user pass) -> (applyBasicAuth user pass, [])
