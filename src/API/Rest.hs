@@ -21,7 +21,6 @@ data Auth
   deriving (Show)
 makeLenses ''Auth
 
-
 apiWrapper :: String -> String -> Method -> Maybe RequestBody -> Auth -> IO LBS
 apiWrapper baseUrl url verb mbBody auth = do
   initReq <- parseUrl (baseUrl <> url)
@@ -41,7 +40,3 @@ apiWrapper baseUrl url verb mbBody auth = do
       (Token tok) -> (id, [(hAuthorization, "Bearer " <> toStrict tok)])
       (Credential user pass) -> (applyBasicAuth user pass, [])
 
-
-mba ? def = case mba of 
-    Just a -> a
-    Nothing -> def
