@@ -33,6 +33,7 @@ apiWrapper baseUrl url verb mbBody auth = do
           ] ++ authHeader
         , requestBody = mbBody ? (RequestBodyLBS LBS.empty)
         }
+  print ("request is:", req)
   liftM responseBody $ withManager $ httpLbs req
   where
     (authFunction, authHeader) = case auth of
