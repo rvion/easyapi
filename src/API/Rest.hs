@@ -22,8 +22,8 @@ data Auth
 makeLenses ''Auth
 
 
-apiWrapper :: String -> String -> Method -> Auth -> IO LBS
-apiWrapper baseUrl url verb auth = do
+apiWrapper :: String -> String -> Method -> Maybe RequestBody -> Auth -> IO LBS
+apiWrapper baseUrl url verb mbBody auth = do
   initReq <- parseUrl (baseUrl <> url)
   let req = authFunction $ initReq
         { secure = True
@@ -32,6 +32,7 @@ apiWrapper baseUrl url verb auth = do
           [ ( hAccept, "application/vnd.heroku+json; version=3" )
           , ( hContentType, "application/json" )
           ] ++ authHeader
+        , requestBody = mbBody ? (RequestBodyLBS LBS.empty)
         }
   liftM responseBody $ withManager $ httpLbs req
   where
@@ -39,3 +40,8 @@ apiWrapper baseUrl url verb auth = do
       NoAuth -> (id, [])
       (Token tok) -> (id, [(hAuthorization, "Bearer " <> toStrict tok)])
       (Credential user pass) -> (applyBasicAuth user pass, [])
+
+
+mba ? def = case mba of 
+    Just a -> a
+    Nothing -> def
