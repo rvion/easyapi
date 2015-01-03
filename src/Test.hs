@@ -2,6 +2,8 @@
 module Test where
 
 import           API.Rest
+
+import           Imports.HTTP
 import           Imports.Prelude
 
 main :: IO ()

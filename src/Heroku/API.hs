@@ -3,13 +3,14 @@
 module Heroku.API where
 
 import           Heroku.Auth
-import           Heroku.Protocol
+import           Heroku.Request
 
 import           API.Rest
 
-import           Data.ByteString.Lazy as LBS
-import           Data.Text            as T
+-- import           Data.ByteString.Lazy as LBS
+-- import           Data.Text            as T
 
+import           Imports.HTTP
 import           Imports.Prelude
 
 restartDyno :: String -> String -> Auth -> IO LBS

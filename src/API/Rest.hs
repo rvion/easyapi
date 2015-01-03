@@ -9,10 +9,9 @@ module API.Rest
 
 import           Data.ByteString      as BS
 import           Data.ByteString.Lazy as LBS
-import           Imports.Prelude
 
-type LBS = LBS.ByteString
-type BS = BS.ByteString
+import           Imports.Prelude
+import           Imports.HTTP
 
 data Auth
   = Credential {_user, _pass :: BS }

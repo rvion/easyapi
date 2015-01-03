@@ -2,9 +2,10 @@
 
 module Heroku.Auth where
 
-import           Heroku.Protocol
-import           API.Rest
+import           Imports.HTTP
 import           Imports.Prelude
+
+import           Heroku.Request
 
 updateToken :: IO (Maybe Auth)
 updateToken = case hardCodedToken of
