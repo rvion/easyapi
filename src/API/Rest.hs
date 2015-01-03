@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports    #-}
-{-# LANGUAGE TemplateHaskell   #-}
+{- # LANGUAGE TemplateHaskell   # -}
 
 module API.Rest
     ( LBS, BS, Auth(..)
     , apiWrapper
     ) where
 
-import           Data.ByteString         as BS
-import           Data.ByteString.Lazy    as LBS
+import           Data.ByteString      as BS
+import           Data.ByteString.Lazy as LBS
 import           "this" Imports
 
 type LBS = LBS.ByteString
@@ -19,7 +19,7 @@ data Auth
   | Token {_token :: LBS }
   | NoAuth
   deriving (Show)
-makeLenses ''Auth
+--makeLenses ''Auth
 
 apiWrapper :: String -> String -> Method -> Maybe RequestBody -> Auth -> IO LBS
 apiWrapper baseUrl url verb mbBody auth = do
@@ -31,9 +31,9 @@ apiWrapper baseUrl url verb mbBody auth = do
           [ ( hAccept, "application/vnd.heroku+json; version=3" )
           , ( hContentType, "application/json" )
           ] ++ authHeader
-        , requestBody = mbBody ? (RequestBodyLBS LBS.empty)
+        , requestBody = mbBody ? RequestBodyLBS LBS.empty
         }
-  print ("request is:", req)
+  print ("request is:" :: String, req)
   liftM responseBody $ withManager $ httpLbs req
   where
     (authFunction, authHeader) = case auth of
