@@ -7,9 +7,6 @@ import           Heroku.Request
 
 import           API.Rest
 
--- import           Data.ByteString.Lazy as LBS
--- import           Data.Text            as T
-
 import           Imports.HTTP
 import           Imports.Prelude
 
