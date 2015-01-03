@@ -1,15 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE PackageImports    #-}
-{- # LANGUAGE TemplateHaskell   # -}
+{-# LANGUAGE TemplateHaskell   #-}
 
 module API.Rest
     ( LBS, BS, Auth(..)
     , apiWrapper
+    , apiWrapper'
     ) where
 
 import           Data.ByteString      as BS
 import           Data.ByteString.Lazy as LBS
-import           "this" Imports
+import           Imports.Prelude
 
 type LBS = LBS.ByteString
 type BS = BS.ByteString
@@ -19,10 +19,13 @@ data Auth
   | Token {_token :: LBS }
   | NoAuth
   deriving (Show)
---makeLenses ''Auth
+makeLenses ''Auth
 
-apiWrapper :: String -> String -> Method -> Maybe RequestBody -> Auth -> IO LBS
-apiWrapper baseUrl url verb mbBody auth = do
+apiWrapper :: String -> String -> Method -> Auth -> IO LBS
+apiWrapper baseUrl url verb = apiWrapper' baseUrl url verb Nothing
+
+apiWrapper' :: String -> String -> Method -> Maybe RequestBody -> Auth -> IO LBS
+apiWrapper' baseUrl url verb mbBody auth = do
   initReq <- parseUrl (baseUrl <> url)
   let req = authFunction $ initReq
         { secure = True

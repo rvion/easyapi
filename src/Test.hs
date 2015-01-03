@@ -1,9 +1,8 @@
-{-# LANGUAGE PackageImports #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Test where
 
 import           API.Rest
-import           "this" Imports
+import           Imports.Prelude
 
 main :: IO ()
 main = do
@@ -18,7 +17,7 @@ tests =
 
 debugRequest :: IO ()
 debugRequest = do
-    let fakeWebsite = apiWrapper "https://fakeWebsite.test"
+    let fakeWebsite = apiWrapper' "https://fakeWebsite.test"
         reqBody = RequestBodyLBS $ encode $ object ["grant_type" .= ("client_credentials" :: String)]
     _ <- fakeWebsite "/oauth2/token" methodPost (Just reqBody) NoAuth
     return ()
