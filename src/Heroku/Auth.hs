@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Heroku.Auth where
 
 import           API.HTTP
@@ -17,7 +15,7 @@ fetchBearerToken auth = do
       NoAuth -> return NoAuth
       Token _ -> return auth
       Credential _ _ -> do
-          response <- heroku "oauth/authorizations" methodPost auth
+          response <- heroku "oauth/authorizations" methodPost auth >>= sendToHeroku
           let token = fmap (Token . textToLbs) $
                 response ^? key "access_token" . key "token" . _String
           case token of

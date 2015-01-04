@@ -10,8 +10,7 @@ import           Control.Monad.Free.TH (makeFree)
 import           Heroku.Types
 
 data HerokuF next
-    = Connect [AppName] next
-    | RestartApp AppName next
+    = RestartApp AppName next
     | RestartDyno AppName DynoName next
     | GetAppInfo AppName (HerokuAppInfo -> next)
     deriving (Functor)

@@ -13,7 +13,6 @@ data Auth
   deriving (Show)
 -- makeLenses ''Auth
 
-
 data AuthException 
     = NotAbleToFetchBearerToken
     | InvalidAuth

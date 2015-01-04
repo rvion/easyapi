@@ -1,4 +1,4 @@
-module API.HTTP 
+module API.HTTP
   ( module X
   ) where
 
