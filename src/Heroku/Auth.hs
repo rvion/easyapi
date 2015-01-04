@@ -11,7 +11,8 @@ import           Control.Monad.Catch
 
 -- | This function transform Auth into bearer token as mention in heroku doc
 fetchBearerToken :: Auth -> IO Auth
-fetchBearerToken auth =
+fetchBearerToken auth = do
+  putStrLn "fetching auth token"
   case auth of 
       NoAuth -> return NoAuth
       Token _ -> return auth
