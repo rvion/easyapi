@@ -14,6 +14,7 @@ import           Heroku.Types
 import           Imports.Env
 import           Imports.Prelude
 
+command :: Heroku (AppInfo,AppInfo)
 command = do
     before <- getAppInfo (App "nav-chronos-eu")
     -- restartApp (App "test")
@@ -24,8 +25,8 @@ test :: IO ()
 test = do
     env <- getLocalEnv
     let auth = Credential
-          { _user = pack $ env ^. atIndex "herokulogin"
-          , _pass = pack $ env ^. atIndex "herokupassword"
+          { _user = pack $ env ^. ix "herokulogin"
+          , _pass = pack $ env ^. ix "herokupassword"
           }
     mbToken <- fetchBearerToken auth
     case mbToken of
@@ -33,6 +34,6 @@ test = do
         Just authToken -> do
             infos <- run authToken command
             print infos
-            print "ok"
+            putStrLn "ok"
 
 main = test

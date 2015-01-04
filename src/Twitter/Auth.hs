@@ -17,5 +17,6 @@ authenticate key pass = do
     -- return $ Token tok
     print resp
 
+auth :: Auth
 auth = Token "xxx"
 

@@ -1,14 +1,21 @@
 module Heroku.Types where
 
+type AppName = String
+type DynoName = String
+
 data App = App
-  { appName :: String
+  { _appName :: AppName
+  } deriving (Show)
+
+data DynoInfo = DynoInfo
+  { _dynoInfoJson :: String
   } deriving (Show)
 
 data AppInfo = AppInfo
-  { appInfoJson :: String
+  { _appInfoJson :: String
   } deriving (Show)
 
 data Dyno = Dyno
-  { dynoApp
-  , dynoName :: String
+  { _dynoApp :: AppName
+  , _dynoName :: DynoName
   } deriving (Show)

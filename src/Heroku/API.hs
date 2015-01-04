@@ -2,11 +2,7 @@
 
 module Heroku.API where
 
-import           Heroku.Auth
 import           Heroku.Request
-
-import           API.Rest
-
 import           Imports.HTTP
 import           Imports.Prelude
 

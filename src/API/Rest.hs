@@ -7,7 +7,7 @@ module API.Rest
     , apiWrapper'
     ) where
 
-import           Data.ByteString      as BS
+
 import           Data.ByteString.Lazy as LBS
 
 import           Imports.Prelude
