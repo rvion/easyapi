@@ -33,12 +33,12 @@ run auth =
         (GetAppInfo app next) -> liftIO (API.fetchDetails app auth >>= sendToHeroku) >>= \rawTxt -> next (AppInfo rawTxt)
         -- _ -> throwM $ PatternMatchFail "didn't implement full dsl evaluation yet"
 
-debug :: ProductionEnv m => Auth -> HerokuDSL a -> m a
-debug auth =
+debug :: ProductionEnv m => HerokuDSL a -> m a
+debug =
     iterM eval
     where
     eval action = case action of
-        (RestartApp app next) -> liftIO (API.restartApp app auth >>= print) >> next
-        (RestartDyno app dyno next) -> liftIO (API.restartDyno app dyno auth >>= print) >> next
-        (GetAppInfo app next) -> liftIO (API.fetchDetails app auth >>= print) >> next (AppInfo "not disponible in debug mode")
+        (RestartApp app next) -> liftIO (API.restartApp app NoAuth >>= print) >> next
+        (RestartDyno app dyno next) -> liftIO (API.restartDyno app dyno NoAuth >>= print) >> next
+        (GetAppInfo app next) -> liftIO (API.fetchDetails app NoAuth >>= print) >> next (AppInfo "not disponible in debug mode")
         -- _ -> throwM $ PatternMatchFail "didn't implement full dsl evaluation yet"
