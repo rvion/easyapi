@@ -4,6 +4,7 @@ module Heroku.Auth where
 
 import           API.HTTP
 import           API.Prelude
+import           API.Rest
 
 import           Heroku.Request
 

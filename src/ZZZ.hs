@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Test where
+module ZZZ where
 
 import           API.Rest
 

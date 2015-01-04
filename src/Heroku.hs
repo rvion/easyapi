@@ -8,12 +8,13 @@ import           API.Rest
 import           Heroku.Auth
 import           Heroku.Eval as X
 
-example :: HerokuDSL (AppInfo,AppInfo)
+example :: HerokuDSL AppInfo
 example = do
-    before <- getAppInfo (App "nav-chronos-eu")
+    login "user" "pass"
+    connect ["nav-chronos-eu", "nav-bluesky-eu", "test"]
+    chronosInfo <- getAppInfo "nav-chronos-eu"
     restartApp "test"
-    after <- getAppInfo (App "nav-chronos-eu")
-    return (before, after)
+    return chronosInfo
 
 test :: IO ()
 test = do
@@ -30,4 +31,5 @@ test = do
             print infos
             putStrLn "ok"
 
+main :: IO ()
 main = test

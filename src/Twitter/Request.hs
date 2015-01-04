@@ -10,10 +10,11 @@ import           API.HTTP
 import           API.Prelude
 import qualified Data.ByteString.Lazy as LBS
 
+tweeter :: String -> Method -> RequestBody -> Auth -> IO LBS
 tweeter = twitterWrapper "https://api.twitter.com"
 
 twitterWrapper :: String -> String -> Method -> RequestBody -> Auth -> IO LBS
-twitterWrapper baseUrl url verb mbBody auth = do
+twitterWrapper baseUrl url verb _ auth = do
   initReq <- parseUrl (baseUrl <> url)
   let req = authFunction $ initReq
         { secure = True
@@ -22,7 +23,7 @@ twitterWrapper baseUrl url verb mbBody auth = do
         , requestBody = RequestBodyLBS "grant_type=client_credentials"
         , queryString = "grant_type=client_credentials"
         }
-  print ("request is:", req)
+  print ("request is:" :: String, req)
   liftM responseBody $ withManager $ httpLbs req
   where
     (authFunction, authHeader) = case auth of

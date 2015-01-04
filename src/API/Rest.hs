@@ -1,12 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
-
 module API.Rest
     ( LBS, BS, Auth(..)
     , apiWrapper
     , apiWrapper'
     ) where
-
 
 import           Data.ByteString.Lazy as LBS
 
@@ -18,7 +15,7 @@ data Auth
   | Token {_token :: LBS }
   | NoAuth
   deriving (Show)
-makeLenses ''Auth
+-- makeLenses ''Auth
 
 apiWrapper :: String -> String -> Method -> Auth -> IO LBS
 apiWrapper baseUrl url verb = apiWrapper' baseUrl url verb Nothing

@@ -4,9 +4,10 @@ module Twitter.Auth where
 
 import           Twitter.Request
 
-import           API.Prelude--           hiding ((.=))
+-- import           API.Prelude--           hiding ((.=))
 import           API.HTTP
 
+authenticate :: BS -> BS -> IO ()
 authenticate key pass = do
     -- let reqBody = RequestBodyLBS $ encode $ 
     --       object ["grant_type" .= ("client_credentials" :: String)]
