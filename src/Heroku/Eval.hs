@@ -1,6 +1,3 @@
-{-# LANGUAGE NoMonomorphismRestriction #-}
-{-# LANGUAGE RankNTypes                #-}
-
 module Heroku.Eval
   ( module Heroku.Eval
   , module X
