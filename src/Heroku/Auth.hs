@@ -7,19 +7,8 @@ import           Imports.Prelude
 
 import           Heroku.Request
 
-updateToken :: IO (Maybe Auth)
-updateToken = case hardCodedToken of
-  Just _ -> return hardCodedToken
-  Nothing -> fetchHerokuToken hardCodedCredentials
-  where
-    hardCodedToken = Nothing -- Just $ Token "secret"
-    hardCodedCredentials = Credential
-      { _user = "vion.remi@gmail.com"
-      , _pass = "secret"
-      } :: Auth
-
-fetchHerokuToken :: Auth -> IO (Maybe Auth)
-fetchHerokuToken auth = do
+fetchBearerToken :: Auth -> IO (Maybe Auth)
+fetchBearerToken auth = do
   response <- heroku "oauth/authorizations" methodPost auth
   let token = fmap (Token . textToLbs) $ response ^? key "access_token" . key "token" . _String
   case token of

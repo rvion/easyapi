@@ -18,6 +18,8 @@ import           Data.ByteString.Lazy as LBS
 import           Data.Text            (Text)
 import           Data.Text.Encoding   as T
 
+import           System.Exit          as X (exitSuccess)
+
 type LBS = LBS.ByteString
 type BS = BS.ByteString
 
