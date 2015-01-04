@@ -4,8 +4,9 @@ module Heroku.Exceptions where
 import           Control.Monad.Catch
 import           Data.Typeable
 
-data AuthException 
+data HerokuException
     = NotAbleToFetchBearerToken
     | InvalidAuth
+    | ErrorInConfigFile
     deriving (Show, Typeable)
-instance Exception AuthException
+instance Exception HerokuException

@@ -28,7 +28,7 @@ loadConfig = do
     case mbCredentials of 
         Nothing -> do 
             putStrLn "Invalid credentials:"
-            throwM NotAbleToFetchBearerToken           
+            throwM ErrorInConfigFile
         Just credentials -> do
             putStrLn $ "Loaded credentilas are "<> show credentials
             putStrLn "Fetching token..."
