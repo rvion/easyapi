@@ -1,5 +1,7 @@
 module Heroku.Types where
 
+data Heroku = Heroku deriving (Eq)
+
 type AppName = String
 type DynoName = String
 
@@ -16,6 +18,6 @@ data AppInfo = AppInfo
   } deriving (Show)
 
 data Dyno = Dyno
-  { _dynoApp :: AppName
+  { _dynoApp  :: AppName
   , _dynoName :: DynoName
   } deriving (Show)

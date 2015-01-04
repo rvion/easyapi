@@ -1,6 +1,6 @@
-module Heroku.Request
+module Heroku.Internal.Request
   ( module X
-  , module Heroku.Request
+  , module Heroku.Internal.Request
   ) where
 
 import           API.Rest        as X

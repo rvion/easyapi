@@ -5,16 +5,14 @@
 module Heroku.Tutorial where
 
 import           API.Rest
-import           Data.ByteString.Char8 (pack)
 
-import           Heroku.Auth
+import           Heroku.Internal.Auth
+
 import           Heroku.DSL
-import           Heroku.Types
-
 import           Imports.Env
 import           Imports.Prelude
 
-command :: Heroku (AppInfo,AppInfo)
+command :: HerokuDSL (AppInfo,AppInfo)
 command = do
     before <- getAppInfo (App "nav-chronos-eu")
     -- restartApp (App "test")

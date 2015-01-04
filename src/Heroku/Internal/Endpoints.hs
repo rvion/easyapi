@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Heroku.API where
+module Heroku.Internal.Endpoints where
 
-import           Heroku.Request
+import           Heroku.Internal.Request
 import           Imports.HTTP
 import           Imports.Prelude
 
