@@ -12,14 +12,15 @@ import           Heroku.Class
 import           Heroku.DSL             as X
 import           Heroku.Types           as X
 
--- import Control.Monad.Catch
+import Control.Monad.Catch
+import Control.Exception
 
-runOnHeroku :: (MonadIO m, HerokuM m) => HerokuDSL a -> m a
+runOnHeroku :: (MonadIO m, HerokuM m, MonadCatch m) => HerokuDSL a -> m a
 runOnHeroku expr = do
     auth <- herokuAuth
     run auth expr
 
-run :: (MonadIO m, HerokuM m) => Auth -> HerokuDSL a -> m a
+run :: (MonadIO m, HerokuM m, MonadCatch m) => Auth -> HerokuDSL a -> m a
 run auth =
     iterM eval
     where
@@ -33,4 +34,4 @@ run auth =
         (GetAppInfo app next) -> do
             lbs <- liftIO $ API.fetchDetails app auth
             next (AppInfo lbs)
-        _ -> error "unimplemented"
+        _ -> throwM $ PatternMatchFail "didn't implement full dsl evaluation yet"
