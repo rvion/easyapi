@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Heroku.Internal.Auth where
+module Heroku.Auth where
 
-import           Imports.HTTP
-import           Imports.Prelude
+import           API.HTTP
+import           API.Prelude
 
-import           Heroku.Internal.Request
+import           Heroku.Request
 
 fetchBearerToken :: Auth -> IO (Maybe Auth)
 fetchBearerToken auth = do

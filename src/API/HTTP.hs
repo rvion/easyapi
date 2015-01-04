@@ -1,4 +1,4 @@
-module Imports.HTTP 
+module API.HTTP 
   ( module X
   ) where
 

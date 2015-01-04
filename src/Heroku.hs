@@ -1,21 +1,17 @@
-{-# LANGUAGE FlexibleContexts          #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
-{-# LANGUAGE OverloadedStrings         #-}
+module Heroku
+  ( module Heroku
+  , module X
+  ) where
 
-module Heroku.Tutorial where
-
+import           API.Prelude
 import           API.Rest
+import           Heroku.Auth
+import           Heroku.Eval as X
 
-import           Heroku.Internal.Auth
-
-import           Heroku.DSL
-import           Imports.Env
-import           Imports.Prelude
-
-command :: HerokuDSL (AppInfo,AppInfo)
-command = do
+example :: HerokuDSL (AppInfo,AppInfo)
+example = do
     before <- getAppInfo (App "nav-chronos-eu")
-    -- restartApp (App "test")
+    restartApp "test"
     after <- getAppInfo (App "nav-chronos-eu")
     return (before, after)
 
@@ -30,7 +26,7 @@ test = do
     case mbToken of
         Nothing -> error "can't login on heroku"
         Just authToken -> do
-            infos <- run authToken command
+            infos <- run authToken example
             print infos
             putStrLn "ok"
 

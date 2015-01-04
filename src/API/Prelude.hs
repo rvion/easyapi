@@ -1,6 +1,8 @@
-{-# LANGUAGE RankNTypes #-}
-module Imports.Prelude
-  ( module Imports.Prelude
+{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE RankNTypes                #-}
+
+module API.Prelude
+  ( module API.Prelude
   , module X
   ) where
 
@@ -13,13 +15,17 @@ import           Data.Aeson            as X
 import           Data.Maybe            (fromMaybe)
 import           Data.Monoid           as X ((<>))
 
-import           Data.ByteString       as BS
+import qualified Data.ByteString       as BS
 import           Data.ByteString.Char8 as X (pack)
-import           Data.ByteString.Lazy  as LBS
+import qualified Data.ByteString.Lazy  as LBS
 import           Data.Text             (Text)
 import           Data.Text.Encoding    as T
 
 import           System.Exit           as X (exitSuccess)
+
+import           Control.Arrow         as X ((&&&))
+import qualified Data.Map              as M
+
 
 type LBS = LBS.ByteString
 type BS = BS.ByteString
@@ -29,3 +35,12 @@ mba ? def = fromMaybe def mba
 
 textToLbs :: Text -> LBS.ByteString
 textToLbs = LBS.fromStrict . T.encodeUtf8
+
+getLocalEnv :: IO (M.Map String String)
+getLocalEnv = M.fromList . map split' . lines <$> readFile "ENV"
+    where
+    split' :: String -> (String, String)
+    split' =
+        takeWhile nonEqualChar &&&
+        tail . dropWhile nonEqualChar
+        where nonEqualChar x = x /= '='

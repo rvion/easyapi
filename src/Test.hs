@@ -3,8 +3,8 @@ module Test where
 
 import           API.Rest
 
-import           Imports.HTTP
-import           Imports.Prelude
+import           API.HTTP
+import           API.Prelude
 
 main :: IO ()
 main = do

@@ -4,8 +4,8 @@ module Twitter.Auth where
 
 import           Twitter.Request
 
-import           Imports.Prelude--           hiding ((.=))
-import           Imports.HTTP
+import           API.Prelude--           hiding ((.=))
+import           API.HTTP
 
 authenticate key pass = do
     -- let reqBody = RequestBodyLBS $ encode $ 

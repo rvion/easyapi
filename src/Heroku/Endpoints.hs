@@ -1,10 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Heroku.Internal.Endpoints where
+module Heroku.Endpoints where
 
-import           Heroku.Internal.Request
-import           Imports.HTTP
-import           Imports.Prelude
+import           API.HTTP
+import           API.Prelude
+import           Heroku.Request
 
 restartDyno :: String -> String -> Auth -> IO LBS
 restartDyno app dyno = heroku ("apps/" <> app <>"/dynos/" <> dyno) methodDelete

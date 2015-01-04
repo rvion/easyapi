@@ -1,30 +1,23 @@
-{-# LANGUAGE KindSignatures #-}
-module Heroku.DSL
-  ( module Heroku.DSL
-  , module X
-  ) where
+{-# LANGUAGE DeriveFunctor    #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TemplateHaskell  #-}
+
+module Heroku.DSL where
+
+import           Control.Monad.Free    (Free, MonadFree, iterM, liftF)
+import           Control.Monad.Free.TH (makeFree)
 
 import           API.Rest
-import           Control.Monad.Free        (Free, MonadFree, iterM, liftF)
-import           Control.Monad.IO.Class    (MonadIO, liftIO)
-import qualified Heroku.Internal.Endpoints as API
+import qualified Heroku.Endpoints      as API
+import           Heroku.Types
 
-import           Heroku.Internal.Grammar   as X
-import           Heroku.Types              as X
+data HerokuF next
+    = Connect String String next
+    | Target [AppName] next
+    | RestartApp AppName next
+    | RestartDyno AppName DynoName next
+    | GetAppInfo App (AppInfo -> next)
+    deriving (Functor)
+makeFree ''HerokuF
+type HerokuDSL a = Free HerokuF a
 
-class CanHeroku (x :: * -> *) where
-instance CanHeroku IO where
-
-run :: (MonadIO m, CanHeroku m) =>
-    Auth -> HerokuDSL a -> m a
-run auth = iterM eval where
-    eval action = case action of
-        (RestartApp app next)   -> do
-            liftIO $ API.restartApp app auth
-            next
-        (RestartDyno app dyno next) -> do
-            liftIO $ API.restartDyno app dyno auth
-            next
-        (GetAppInfo dynos next) -> do
-            liftIO $ API.fetchDetails "test" auth
-            next (AppInfo "test")

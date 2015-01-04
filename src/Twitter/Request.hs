@@ -6,8 +6,8 @@ module Twitter.Request
   ) where
 
 import           API.Rest        as X
-import           Imports.HTTP
-import           Imports.Prelude
+import           API.HTTP
+import           API.Prelude
 import qualified Data.ByteString.Lazy as LBS
 
 tweeter = twitterWrapper "https://api.twitter.com"

@@ -10,8 +10,8 @@ module API.Rest
 
 import           Data.ByteString.Lazy as LBS
 
-import           Imports.Prelude
-import           Imports.HTTP
+import           API.Prelude
+import           API.HTTP
 
 data Auth
   = Credential {_user, _pass :: BS }
