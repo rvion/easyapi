@@ -38,9 +38,9 @@ loadApp = do
 -- | your DSL code
 exampleDSL :: HerokuDSL HerokuAppInfo
 exampleDSL = do
-    connect ["nav-chronos-eu", "nav-bluesky-eu", "test"]
+    -- connect ["nav-chronos-eu", "nav-bluesky-eu", "test"]
     chronosInfo <- getAppInfo "nav-chronos-eu"
-    restartApp "test"
+    -- restartApp "test"
     return chronosInfo
 
 type AppM = StateT App IO
@@ -50,9 +50,7 @@ instance HerokuM (AppM) where
 -- Your main program, running in some monad (here IO)
 exampleApp :: AppM ()
 exampleApp = do
-    -- mbToken <- fetchBearerToken auth
-    -- case mbToken of
-    infos <- run undefined exampleDSL
+    infos <- runOnHeroku exampleDSL
     liftIO $ print infos
     liftIO exitSuccess
 

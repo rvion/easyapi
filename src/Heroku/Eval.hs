@@ -1,5 +1,5 @@
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE NoMonomorphismRestriction    #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE RankNTypes                #-}
 
 module Heroku.Eval
   ( module Heroku.Eval
@@ -17,9 +17,15 @@ import           Heroku.Types           as X
 
 -- import Control.Monad.Catch
 
-run :: (MonadIO m, HerokuM m) =>
-    Auth -> HerokuDSL a -> m a
-run auth = iterM eval where
+runOnHeroku :: (MonadIO m, HerokuM m) => HerokuDSL a -> m a
+runOnHeroku expr = do
+    auth <- herokuAuth
+    run auth expr
+
+run :: (MonadIO m, HerokuM m) => Auth -> HerokuDSL a -> m a
+run auth =
+    iterM eval
+    where
     eval action = case action of
         (RestartApp app next)   -> do
             _ <- liftIO $ API.restartApp app auth
@@ -28,6 +34,6 @@ run auth = iterM eval where
             _ <- liftIO $ API.restartDyno app dyno auth
             next
         (GetAppInfo app next) -> do
-            _ <- liftIO $ API.fetchDetails app auth
-            next (AppInfo "test")
+            lbs <- liftIO $ API.fetchDetails app auth
+            next (AppInfo lbs)
         _ -> error "unimplemented"

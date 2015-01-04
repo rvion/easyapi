@@ -1,4 +1,5 @@
 module Heroku.Types where
+import API.Prelude
 
 data Heroku = Heroku deriving (Eq)
 
@@ -10,5 +11,5 @@ data DynoInfo = DynoInfo
   } deriving (Show)
 
 data HerokuAppInfo = AppInfo
-  { _herokuAppInfoJson :: String
+  { _herokuAppInfoJson :: LBS
   } deriving (Show)
