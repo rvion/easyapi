@@ -15,6 +15,7 @@ import           Data.ByteString.Char8 as X (pack)
 import           Data.Maybe            as X (fromMaybe)
 import           Data.Monoid           as X ((<>))
 import           System.Exit           as X (exitSuccess)
+import           Control.Monad.Catch   as X
 
 import qualified Data.ByteString       as BS
 import qualified Data.ByteString.Lazy  as LBS

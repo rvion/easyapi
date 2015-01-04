@@ -1,17 +1,14 @@
 module Heroku.Auth where
 
-import           API.HTTP
-import           API.Prelude
-import           API.Auth
-
+import           API.Easy
 import           Heroku.Request
-import           Control.Monad.Catch
+import           Heroku.Exceptions
 
 -- | This function transform Auth into bearer token as mention in heroku doc
 fetchBearerToken :: Auth -> IO Auth
 fetchBearerToken auth = do
   putStrLn "fetching auth token"
-  case auth of 
+  case auth of
       NoAuth -> return NoAuth
       Token _ -> return auth
       Credential _ _ -> do

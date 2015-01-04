@@ -17,35 +17,46 @@ data App = App
   } deriving (Show)
 makeFields ''App
 
-loadApp :: IO App
-loadApp = do
+loadConfig :: IO App
+loadConfig = do
     env <- liftIO getEnvfromConfigFile
-    bearerToken <- fetchBearerToken Credential
-      { _user = pack $ env ^. ix "herokulogin"
-      , _pass = pack $ env ^. ix "herokupassword"
-      }
-    return $ App bearerToken
+    putStrLn "Fetching env from file..."
+    let mbCredentials = do
+            user <- pack <$> env ^. at "herokuldeogin"
+            pass <- pack <$> env ^. at "herokupasdesword"
+            return Credential { _user =  user, _pass = pass}
+    case mbCredentials of 
+        Nothing -> do 
+            putStrLn "Invalid credentials:"
+            throwM NotAbleToFetchBearerToken           
+        Just credentials -> do
+            putStrLn $ "Loaded credentilas are "<> show credentials
+            putStrLn "Fetching token..."
+            bearerToken <- fetchBearerToken credentials
+            putStrLn $ "loaded credentilas are "<> show bearerToken
+            return $ App bearerToken
 
 -- | your DSL code
-exampleDSL :: HerokuDSL HerokuAppInfo
+exampleDSL :: HerokuDSL (HerokuAppInfo, HerokuAppInfo)
 exampleDSL = do
     blueskyInfo <- getAppInfo "nav-bluesky-eu"
-    -- restartApp "test"
-    _ <- getAppInfo "nav-chronos-eu"
-    return blueskyInfo
+    chronosInfo <- getAppInfo "nav-chronos-eu"
+    return (chronosInfo, blueskyInfo)
 
 type AppM = StateT App IO
 instance HerokuM (AppM) where
     herokuAuth = use hkAuth
 
--- Your main program, running in some monad (here IO)
 exampleApp :: AppM ()
 exampleApp = do
+    liftIO $ putStrLn "initializing program"
     infos <- runOnHeroku exampleDSL
-    liftIO $ print infos
-    liftIO exitSuccess
+    liftIO $ do
+        print infos
+        putStrLn "Doing more stuff"
+        exitSuccess
 
 main :: IO ()
 main = do
-    initialApp <- loadApp
+    initialApp <- loadConfig
     runStateT exampleApp initialApp  >>= print

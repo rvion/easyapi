@@ -1,10 +1,6 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-
 module API.Auth where
 
 import           API.Prelude         (BS, LBS)
-import           Control.Monad.Catch
-import           Data.Typeable
 
 data Auth
   = Credential {_user, _pass :: BS }
@@ -12,9 +8,3 @@ data Auth
   | NoAuth
   deriving (Show)
 -- makeLenses ''Auth
-
-data AuthException 
-    = NotAbleToFetchBearerToken
-    | InvalidAuth
-    deriving (Show, Typeable)
-instance Exception AuthException
