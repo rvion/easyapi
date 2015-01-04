@@ -5,7 +5,7 @@ module Twitter.Request
   , module Twitter.Request
   ) where
 
-import           API.Rest        as X
+import           API.Auth        as X
 import           API.HTTP
 import           API.Prelude
 import qualified Data.ByteString.Lazy as LBS

@@ -4,15 +4,21 @@ module Heroku.Auth where
 
 import           API.HTTP
 import           API.Prelude
-import           API.Rest
+import           API.Auth
 
 import           Heroku.Request
+import           Control.Monad.Catch
 
-fetchBearerToken :: Auth -> IO (Maybe Auth)
-fetchBearerToken auth = do
-  response <- heroku "oauth/authorizations" methodPost auth
-  let token = fmap (Token . textToLbs) $ response ^? key "access_token" . key "token" . _String
-  case token of
-    Nothing -> print ("can't get token" :: String)
-    Just tok -> print $ "new token given by heroku is " <> show tok
-  return token
+-- | This function transform Auth into bearer token as mention in heroku doc
+fetchBearerToken :: Auth -> IO Auth
+fetchBearerToken auth =
+  case auth of 
+      NoAuth -> return NoAuth
+      Token _ -> return auth
+      Credential _ _ -> do
+          response <- heroku "oauth/authorizations" methodPost auth
+          let token = fmap (Token . textToLbs) $
+                response ^? key "access_token" . key "token" . _String
+          case token of
+            Nothing -> throwM NotAbleToFetchBearerToken
+            Just tok -> return tok

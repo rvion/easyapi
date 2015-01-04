@@ -1,8 +1,7 @@
+{-# LANGUAGE KindSignatures #-}
 module Heroku.Class where
+import           API.Auth
 
-class CanHeroku m where
-    loginM :: String -> String -> m ()
-    
-instance CanHeroku IO where
-    loginM _ _ = print "unimplemented loginM"
+class HerokuM (m :: * -> * )where
+    herokuAuth :: m Auth
 

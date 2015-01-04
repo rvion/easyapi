@@ -10,11 +10,10 @@ import           Control.Monad.Free.TH (makeFree)
 import           Heroku.Types
 
 data HerokuF next
-    = Login String String next
-    | Connect [AppName] next
+    = Connect [AppName] next
     | RestartApp AppName next
     | RestartDyno AppName DynoName next
-    | GetAppInfo AppName (AppInfo -> next)
+    | GetAppInfo AppName (HerokuAppInfo -> next)
     deriving (Functor)
 makeFree ''HerokuF
 type HerokuDSL a = Free HerokuF a

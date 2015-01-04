@@ -4,7 +4,7 @@ module Heroku.Endpoints where
 
 import           API.HTTP
 import           API.Prelude
-import           API.Rest
+import           API.Auth
 import           Heroku.Request
 
 restartDyno :: String -> String -> Auth -> IO LBS
