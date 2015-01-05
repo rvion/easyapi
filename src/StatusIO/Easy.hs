@@ -4,3 +4,4 @@ module StatusIO.Easy
 
 import           StatusIO.Class as X
 import           StatusIO.Endpoints as X
+import           StatusIO.Types as X
