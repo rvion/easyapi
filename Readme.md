@@ -1,1 +1,1 @@
-## Library to ease creation of WEB API wrapper
+## Easy API helps you building awesome stuff

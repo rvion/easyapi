@@ -1,5 +1,5 @@
-module Examples.Zeus.Prelude
-  ( module Examples.Zeus.Prelude
+module Zeus.Prelude
+  ( module Zeus.Prelude
   , module X
   ) where
 

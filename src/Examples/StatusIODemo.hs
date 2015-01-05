@@ -1,4 +1,4 @@
-module Examples.StatusIODemoB where
+module Examples.StatusIODemo where
 
 import API.Easy
 import StatusIO.Easy

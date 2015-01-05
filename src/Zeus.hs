@@ -4,9 +4,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE PatternSynonyms #-}
 
-module Examples.Zeus where
+module Zeus where
 
-import Examples.Zeus.Prelude
+import Zeus.Prelude
 
 ------- Status --------------------
 data ApplicationStatus = ApplicationStatus
