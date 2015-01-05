@@ -35,7 +35,7 @@ instance ToJSON IncidentStatus where
 
 -- | Necessary data to create incidents on statusIO
 -- http://docs.statusio.apiary.io/#incidents
-data CreateIncident = CreateIncident
+data IncidentData = IncidentData
     { statuspage_id :: String
     , all_infrastructure_affected :: Int
     , components :: [Component]
@@ -46,8 +46,8 @@ data CreateIncident = CreateIncident
     , current_state :: IncidentState
     }
 
-instance ToJSON CreateIncident where
-    toJSON (CreateIncident{..}) = object
+instance ToJSON IncidentData where
+    toJSON (IncidentData{..}) = object
         [ "statuspage_id" .= statuspage_id
         , "all_infrastructure_affected" .= all_infrastructure_affected
         , "components" .= components
@@ -64,8 +64,8 @@ instance ToJSON CreateIncident where
         , "social" .= (0 :: Integer)
         ]
 
-instance Default CreateIncident where
-    def = CreateIncident
+instance Default IncidentData where
+    def = IncidentData
         { statuspage_id = ""
         , all_infrastructure_affected = 0
         , components = []

@@ -4,17 +4,14 @@ module Heroku.Eval
   ( module Heroku.Eval
   ) where
 
-import           API.Auth
+import           API.Easy
 import           Control.Monad.Free     (iterM)
 import           Control.Monad.IO.Class (MonadIO, liftIO)
 import qualified Heroku.Endpoints       as API
 
 import           Heroku.Class
 import           Heroku.DSL
-import           Heroku.Request
 import           Heroku.Types
-
-import           Control.Monad.Catch
 
 runOnHeroku :: (MonadIO m, HerokuM m, MonadCatch m) => HerokuDSL a -> m a
 runOnHeroku expr = do
@@ -29,15 +26,26 @@ run auth =
     iterM eval
     where
     eval action = case action of
-        (RestartApp app next) -> liftIO (API.restartApp app auth >>= sendToHeroku) >> next
-        (RestartDyno app dyno next) -> liftIO (API.restartDyno app dyno auth >>= sendToHeroku) >> next
-        (GetAppInfo app next) -> liftIO (API.fetchDetails app auth >>= sendToHeroku) >>= \rawTxt -> next (AppInfo rawTxt)
+        (RestartApp app next) -> do
+            restartRequest <- liftIO (API.restartApp app auth)
+            _ <- liftIO $ httpSend restartRequest
+            next
+        (RestartDyno app dyno next) -> do
+            restartDynoRequest <- liftIO (API.restartDyno app dyno auth)
+            _ <- liftIO $ httpSend restartDynoRequest
+            next
+        (GetAppInfo app next) -> do
+            rawTxt <- liftIO (API.fetchDetails app auth >>= httpSend) 
+            next (AppInfo rawTxt)
 
 debug :: ProductionEnv m => HerokuDSL a -> m a
 debug =
     iterM eval
     where
     eval action = case action of
-        (RestartApp app next) -> liftIO (API.restartApp app NoAuth >>= print) >> next
-        (RestartDyno app dyno next) -> liftIO (API.restartDyno app dyno NoAuth >>= print) >> next
-        (GetAppInfo app next) -> liftIO (API.fetchDetails app NoAuth >>= print) >> next (AppInfo "not disponible in debug mode")
+        (RestartApp app next) -> 
+            liftIO (API.restartApp app NoAuth >>= print) >>next
+        (RestartDyno app dyno next) ->
+            liftIO (API.restartDyno app dyno NoAuth >>= print) >> next
+        (GetAppInfo app next) ->
+            liftIO (API.fetchDetails app NoAuth >>= print) >> next (AppInfo "not disponible in debug mode")

@@ -12,7 +12,7 @@ fetchBearerToken auth = do
       NoAuth -> return NoAuth
       Token _ -> return auth
       Credential _ _ -> do
-          response <- heroku "oauth/authorizations" methodPost auth >>= sendToHeroku
+          response <- heroku "oauth/authorizations" methodPost auth >>= httpSend
           let token = fmap (Token . textToLbs) $
                 response ^? key "access_token" . key "token" . _String
           case token of

@@ -11,12 +11,6 @@ import           API.Prelude
 import           API.HTTP
 
 import           Data.ByteString.Lazy as LBS
-import           Control.Monad.IO.Class (MonadIO)
-
-import Control.Monad.Trans.Control (MonadBaseControl)
-
-sendToHeroku :: (MonadIO m, MonadBaseControl IO m) => Request -> m LBS
-sendToHeroku req = liftM responseBody $ withManager $ httpLbs req
 
 heroku :: String -> Method -> Auth -> IO Request
 heroku = apiWrapper "https://api.heroku.com/"

@@ -16,8 +16,9 @@ import qualified Data.CaseInsensitive        as CI
 sendToHeroku :: (MonadIO m, MonadBaseControl IO m) => Request -> m LBS
 sendToHeroku req = liftM responseBody $ withManager $ httpLbs req
 
-statusIO :: String -> Method -> Auth -> IO Request
-statusIO = apiWrapper "https://api.status.io/v2/"
+--statusIO :: String -> Method -> Auth -> IO Request
+statusIO :: String -> Method -> Maybe RequestBody -> Auth -> IO Request
+statusIO = apiWrapper' "https://api.status.io/v2/"
 
 apiWrapper :: String -> String -> Method -> Auth -> IO Request
 apiWrapper baseUrl url verb = apiWrapper' baseUrl url verb Nothing
@@ -28,8 +29,7 @@ apiWrapper' baseUrl url verb mbBody auth = do
   return $ authFunction $ initReq
         { secure = True
         , method = verb
-        , requestHeaders =
-          ( hContentType, "application/json" ) : authHeader
+        , requestHeaders = ( hContentType, "application/json" ) : authHeader
         , requestBody = mbBody ? RequestBodyLBS LBS.empty
         }
   where
