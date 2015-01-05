@@ -1,25 +1,23 @@
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RankNTypes        #-}
 
-module Heroku.Request
-  ( module Heroku.Request
-  ) where
+module StatusIO.Request where
 
 import           API.Auth
-import           API.Prelude
 import           API.HTTP
+import           API.Prelude
 
-import           Data.ByteString.Lazy as LBS
-import           Control.Monad.IO.Class (MonadIO)
-
-import Control.Monad.Trans.Control (MonadBaseControl)
+import           Control.Monad.IO.Class      (MonadIO)
+import           Control.Monad.Trans.Control (MonadBaseControl)
+import           Data.ByteString.Lazy        as LBS
+import qualified Data.CaseInsensitive        as CI
 
 sendToHeroku :: (MonadIO m, MonadBaseControl IO m) => Request -> m LBS
 sendToHeroku req = liftM responseBody $ withManager $ httpLbs req
 
-heroku :: String -> Method -> Auth -> IO Request
-heroku = apiWrapper "https://api.heroku.com/"
+statusIO :: String -> Method -> Auth -> IO Request
+statusIO = apiWrapper "https://api.status.io/v2/"
 
 apiWrapper :: String -> String -> Method -> Auth -> IO Request
 apiWrapper baseUrl url verb = apiWrapper' baseUrl url verb Nothing
@@ -31,13 +29,20 @@ apiWrapper' baseUrl url verb mbBody auth = do
         { secure = True
         , method = verb
         , requestHeaders =
-          [ ( hAccept, "application/vnd.heroku+json; version=3" )
-          , ( hContentType, "application/json" )
-          ] ++ authHeader
+          ( hContentType, "application/json" ) : authHeader
         , requestBody = mbBody ? RequestBodyLBS LBS.empty
         }
   where
     (authFunction, authHeader) = case auth of
       NoAuth -> (id, [])
       (Token tok) -> (id, [(hAuthorization, "Bearer " <> toStrict tok)])
-      (Credential user pass) -> (applyBasicAuth user pass, [])
+      (Credential user pass) -> (applyStatusIOAuth user pass, [])
+
+applyStatusIOAuth :: BS -> BS -> Request -> Request
+applyStatusIOAuth user passwd req = req
+    { requestHeaders = apiIdHeader : apiKeyHeader :requestHeaders req
+    }
+  where
+    apiIdHeader = (CI.mk "x-api-id", user)
+    apiKeyHeader = (CI.mk "x-api-key", passwd)
+

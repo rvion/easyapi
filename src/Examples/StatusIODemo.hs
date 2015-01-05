@@ -3,7 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE FlexibleInstances #-}
 
-module Examples.HerokuApp where
+module Examples.StatusIODemo where
 
 import           API.Easy
 import           Heroku.Easy
