@@ -22,8 +22,8 @@ loadConfig = do
     env <- liftIO getEnvfromConfigFile
     putStrLn "Fetching env from file..."
     let mbCredentials = do
-            user <- pack <$> env ^. at "herokuldeogin"
-            pass <- pack <$> env ^. at "herokupasdesword"
+            user <- pack <$> env ^. at "heroku_login"
+            pass <- pack <$> env ^. at "heroku_password"
             return Credential { _user =  user, _pass = pass}
     case mbCredentials of 
         Nothing -> do 
