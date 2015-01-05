@@ -17,7 +17,10 @@ main = do
     case mbAuth of
         Nothing -> putStrLn "Impossible to fetch auth"
         Just auth -> do
+            putStrLn "auth loaded"
             createIncidentRequest <- createIncident def auth
+            print createIncidentRequest
+            putStrLn "sending request"
             rawResp <- httpSend createIncidentRequest
             print rawResp
     putStrLn "end"

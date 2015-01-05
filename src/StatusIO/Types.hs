@@ -36,26 +36,28 @@ instance ToJSON IncidentStatus where
 -- | Necessary data to create incidents on statusIO
 -- http://docs.statusio.apiary.io/#incidents
 data IncidentData = IncidentData
-    { statuspage_id :: String
-    , all_infrastructure_affected :: Int
+    { statuspageId :: String
+    , allInfrastructureAffected :: Int
     , components :: [Component]
     , containers :: [Container]
-    , incident_name :: String
-    , incident_details :: String
-    , current_status :: IncidentStatus
-    , current_state :: IncidentState
+    , incidentName :: String
+    , incidentDetails :: String
+    , currentStatus :: IncidentStatus
+    , currentState :: IncidentState
     }
 
+-- | manual instance to allow extra fields addition,
+-- and easy un-camelcasing
 instance ToJSON IncidentData where
     toJSON (IncidentData{..}) = object
-        [ "statuspage_id" .= statuspage_id
-        , "all_infrastructure_affected" .= all_infrastructure_affected
+        [ "statuspage_id" .= statuspageId
+        , "all_infrastructure_affected" .= allInfrastructureAffected
         , "components" .= components
         , "containers" .= containers
-        , "incident_name" .= incident_name
-        , "incident_details" .= incident_details
-        , "current_status" .= current_status
-        , "current_state" .= current_state
+        , "incident_name" .= incidentName
+        , "incident_details" .= incidentDetails
+        , "current_status" .= currentStatus
+        , "current_state" .= currentState
         -- Below are required fields we always
         -- want to be the same
         , "notify_email" .= (0 :: Integer)
@@ -66,12 +68,12 @@ instance ToJSON IncidentData where
 
 instance Default IncidentData where
     def = IncidentData
-        { statuspage_id = ""
-        , all_infrastructure_affected = 0
+        { statuspageId = ""
+        , allInfrastructureAffected = 0
         , components = []
         , containers = []
-        , incident_name = ""
-        , incident_details = ""
-        , current_status = Operational
-        , current_state = Investigating
+        , incidentName = ""
+        , incidentDetails = ""
+        , currentStatus = Operational
+        , currentState = Investigating
         }

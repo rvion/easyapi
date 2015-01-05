@@ -3,6 +3,7 @@
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE PatternSynonyms #-}
+
 module Examples.Zeus where
 
 import Examples.Zeus.Prelude
@@ -80,7 +81,6 @@ monitor app notify = do
   return status
 
 -------- Notfification strategy ---------
-
 type NotificationStrategy = ApplicationStatus -> IO ()
 
 statusIO :: String -> NotificationStrategy
