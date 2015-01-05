@@ -10,8 +10,9 @@ main = do
     putStrLn "start"
     env <- getEnvfromConfigFile
     putStrLn "Fetching env from file..."
-    let statusIOPageID = env ^. ix "STATUS_IO_PAGE_ID"
-        statusIOChronosComponenet = env ^. ix "STATUS_IO_CHRONOS_COMPONENT"
+    let pageID = env ^. ix "STATUS_IO_PAGE_ID"
+        chronosComponent = env ^. ix "STATUS_IO_CHRONOS_COMPONENT"
+        chronosContainer = env ^. ix "STATUS_IO_HEROKU_EU_CONTAINER"
         mbAuth = do
             user <- pack <$> env ^. at "STATUS_IO_ID"
             pass <- pack <$> env ^. at "STATUS_IO_KEY"
@@ -22,8 +23,9 @@ main = do
         Just auth -> do
             putStrLn "auth loaded"
             let chronosApp = def
-                    { statuspageId = statusIOPageID
-                    , components = [statusIOChronosComponenet]
+                    { statuspageId = pageID
+                    , components = [chronosComponent]
+                    , containers = [chronosContainer]
                     , incidentName = "zeus alpha test incident"
                     , incidentDetails = "zeus alpha test incident"
                     }
